@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sciar Tips · My Weekly Tips (Alpha)</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --accent: #0f766e;
+      --accent-soft: #f0fdfa;
+      --warn-bg: #fffbeb;
+      --warn-border: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      font-size: 16px;
+    }
+    .wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    header {
+      margin-bottom: 16px;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid #99f6e4;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+    h1 {
+      font-size: 22px;
+      margin: 0 0 4px;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    h2 {
+      font-size: 17px;
+      margin: 0 0 10px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    select, textarea, button {
+      width: 100%;
+      font-size: 16px;
+      border-radius: 8px;
+      font-family: inherit;
+    }
+    select, textarea {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--ink);
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #e2e8f0;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .stat {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .stat .k {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+    }
+    .stat .v {
+      font-size: 19px;
+      font-weight: 700;
+      margin-top: 2px;
+      display: block;
+    }
+    .source-tag {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: #f1f5f9;
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      word-break: break-word;
+    }
+    .notice {
+      background: var(--warn-bg);
+      border-left: 4px solid var(--warn-border);
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .trace-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 8px;
+      background: var(--bg);
+      font-size: 14px;
+    }
+    .trace-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .nav-link {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .nav-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="badge">Sciar Tips · Staff View Alpha (Fictional Pilot)</span>
+      <h1>My Weekly Tips</h1>
+      <p class="sub">Plain-English tip breakdown for Halloran's pilot (12 weeks). Designed for phone screens.</p>
+      <a class="nav-link" href="index.html">← Back to Sciar Tips overview</a>
+    </header>
+
+    <section class="card" aria-label="Select your profile">
+      <label for="staffSelect">1. Choose your name (your view only)</label>
+      <select id="staffSelect"></select>
+      <p class="sub" style="margin-top:8px;">
+        Privacy rule: You see only your own hours and payouts. Colleague role averages appear only for roles with 3 or more staff.
+      </p>
+    </section>
+
+    <section class="card" aria-label="Your summary and hidden calculation details">
+      <h2 id="personHeading">Your 12-Week Summary</h2>
+      <div class="grid" id="summaryGrid"></div>
+
+      <div class="notice" id="ruleBox"></div>
+
+      <div class="source-tag" id="summarySource"></div>
+    </section>
+
+    <section class="card" aria-label="Colleague group benchmarks">
+      <h2>Team Benchmarks (Groups of 3+ Staff Only)</h2>
+      <p class="sub">
+        To protect privacy, roles with 1 or 2 people (floor manager, bar, kitchen porter) are not listed here so individuals cannot be identified.
+      </p>
+      <div id="groupTableWrap"></div>
+      <div class="source-tag" id="groupSource"></div>
+    </section>
+
+    <section class="card" aria-label="Weekly payout breakdown">
+      <h2>Your Weekly Breakdown</h2>
+      <p class="sub">Every Monday payout from your logged rota hours.</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Wk</th>
+              <th>Total hrs</th>
+              <th>After 23:00</th>
+              <th>Points</th>
+              <th>Pool</th>
+              <th>Your pay</th>
+            </tr>
+          </thead>
+          <tbody id="weeklyBody"></tbody>
+        </table>
+      </div>
+      <div class="source-tag" id="weeklySource"></div>
+    </section>
+
+    <section class="card" aria-label="Raise a concern">
+      <h2>Raise a Concern Privately</h2>
+      <p class="sub">
+        If your hours, late shifts, or payout look wrong, write a note below. Simple English is fine.
+      </p>
+      <div class="notice">
+        <strong>Honest Alpha Notice (Simulated Storage):</strong> In this alpha, your concern is saved <strong>only in this browser's local storage</strong> so you keep a dated record. Neither Declan nor Niamh can see it here, and it is not sent to a live server.
+      </div>
+      <label for="concernText">What happened?</label>
+      <textarea id="concernText" rows="3" placeholder="Example: Week 10 I worked 20 hours after 23:00 and want to check how points were counted."></textarea>
+      <button id="submitConcern" type="button">Save Concern to My Record</button>
+
+      <div id="concernList" style="margin-top:12px;"></div>
+    </section>
+  </div>
+
+  <script src="data/payouts.js"></script>
+  <script src="data/takings.js"></script>
+  <script>
+    (function () {
+      if (typeof PAYOUTS === "undefined" || !Array.isArray(PAYOUTS)) {
+        document.body.innerHTML = "<div class='wrap'><p>Error: Could not load data/payouts.js.</p></div>";
+        return;
+      }
+
+      const rows = PAYOUTS.map(r => ({
+        week: Number(r.week),
+        week_start: r.week_start,
+        staff_id: r.staff_id,
+        first_name: r.first_name,
+        role: r.role,
+        hours: Number(r.hours),
+        hours_after_2300: Number(r.hours_after_2300),
+        points_per_hour: Number(r.points_per_hour),
+        points: Number(r.points),
+        week_pool_eur: Number(r.week_pool_eur),
+        tip_payout_eur: Number(r.tip_payout_eur)
+      }));
+
+      // Build distinct staff list (sorted by staff_id)
+      const staffMap = new Map();
+      rows.forEach(r => {
+        if (!staffMap.has(r.staff_id)) {
+          staffMap.set(r.staff_id, { staff_id: r.staff_id, first_name: r.first_name, role: r.role });
+        }
+      });
+      const staffList = Array.from(staffMap.values()).sort((a, b) => a.staff_id.localeCompare(b.staff_id));
+
+      const staffSelect = document.getElementById("staffSelect");
+      staffList.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.staff_id;
+        opt.textContent = `${s.first_name} (${s.role})`;
+        if (s.staff_id === "S12") opt.selected = true; // Default to Rafael (S12)
+        staffSelect.appendChild(opt);
+      });
+
+      // Compute role aggregates for roles with >= 3 distinct staff
+      function renderGroupBenchmarks() {
+        const byRole = {};
+        rows.forEach(r => {
+          if (!byRole[r.role]) {
+            byRole[r.role] = { role: r.role, staffIds: new Set(), rowCount: 0, hours: 0, after23: 0, payout: 0 };
+          }
+          byRole[r.role].staffIds.add(r.staff_id);
+          byRole[r.role].rowCount += 1;
+          byRole[r.role].hours += r.hours;
+          byRole[r.role].after23 += r.hours_after_2300;
+          byRole[r.role].payout += r.tip_payout_eur;
+        });
+
+        const eligible = Object.values(byRole).filter(g => g.staffIds.size >= 3);
+        let html = "<table><thead><tr><th>Role (n staff)</th><th>Rows</th><th>Avg €/total hr</th><th>% hrs after 23:00</th></tr></thead><tbody>";
+        eligible.forEach(g => {
+          const eurPerHr = (g.payout / g.hours).toFixed(2);
+          const pctLate = ((g.after23 / g.hours) * 100).toFixed(2);
+          html += `<tr>
+            <td>${g.role} (n=${g.staffIds.size})</td>
+            <td>${g.rowCount}</td>
+            <td>€${eurPerHr}</td>
+            <td>${pctLate}%</td>
+          </tr>`;
+        });
+        html += "</tbody></table>";
+        document.getElementById("groupTableWrap").innerHTML = html;
+        document.getElementById("groupSource").textContent =
+          "Source: data/payouts.js (payouts.csv), filter: distinct staff_id per role >= 3 (server n=5, rows=60; chef n=3, rows=36).";
+      }
+
+      function storageKey(staffId) {
+        return `sciar_alpha_concerns_${staffId}`;
+      }
+
+      function renderConcerns(staffId, firstName) {
+        const listEl = document.getElementById("concernList");
+        let saved = [];
+        try {
+          saved = JSON.parse(localStorage.getItem(storageKey(staffId)) || "[]");
+        } catch (e) {
+          saved = [];
+        }
+
+        if (saved.length === 0) {
+          listEl.innerHTML = `<p class="sub">No saved concerns in this browser for ${firstName} yet.</p>`;
+          return;
+        }
+
+        listEl.innerHTML = `<h3 style="font-size:15px;margin:0 0 6px;">Your Saved Concern Trace (${saved.length})</h3>` +
+          saved.map((item, idx) => `
+            <div class="trace-item">
+              <div class="trace-meta">Trace #${idx + 1} · ${item.timestamp} · Status: Stored locally in your browser</div>
+              <div>${escapeHtml(item.text)}</div>
+            </div>
+          `).join("");
+      }
+
+      function escapeHtml(str) {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function renderStaff(staffId) {
+        const myRows = rows.filter(r => r.staff_id === staffId).sort((a, b) => a.week - b.week);
+        if (!myRows.length) return;
+
+        const person = myRows[0];
+        const totalHours = myRows.reduce((s, r) => s + r.hours, 0);
+        const totalAfter23 = myRows.reduce((s, r) => s + r.hours_after_2300, 0);
+        const countedHours = totalHours - totalAfter23;
+        const totalPoints = myRows.reduce((s, r) => s + r.points, 0);
+        const totalPayout = myRows.reduce((s, r) => s + r.tip_payout_eur, 0);
+        const eurPerTotalHr = (totalPayout / totalHours).toFixed(2);
+        const pctAfter23 = ((totalAfter23 / totalHours) * 100).toFixed(2);
+
+        document.getElementById("personHeading").textContent =
+          `${person.first_name}'s 12-Week Summary (${person.role})`;
+
+        document.getElementById("summaryGrid").innerHTML = `
+          <div class="stat">
+            <span class="k">Total Tip Payout</span>
+            <span class="v">€${totalPayout.toFixed(2)}</span>
+          </div>
+          <div class="stat">
+            <span class="k">Tips per Total Hour</span>
+            <span class="v">€${eurPerTotalHr}/hr</span>
+          </div>
+          <div class="stat">
+            <span class="k">Hours After 23:00 (0 pts)</span>
+            <span class="v">${totalAfter23.toFixed(1)}h (${pctAfter23}%)</span>
+          </div>
+          <div class="stat">
+            <span class="k">Counted Hours × Rate</span>
+            <span class="v">${countedHours.toFixed(1)}h × ${person.points_per_hour}</span>
+          </div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sciar Tips · My Weekly Tips (Alpha)</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --accent: #0f766e;
+      --accent-soft: #f0fdfa;
+      --warn-bg: #fffbeb;
+      --warn-border: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      font-size: 16px;
+    }
+    .wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    header {
+      margin-bottom: 16px;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid #99f6e4;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+    h1 {
+      font-size: 22px;
+      margin: 0 0 4px;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    h2 {
+      font-size: 17px;
+      margin: 0 0 10px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    select, textarea, button {
+      width: 100%;
+      font-size: 16px;
+      border-radius: 8px;
+      font-family: inherit;
+    }
+    select, textarea {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--ink);
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #e2e8f0;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .stat {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .stat .k {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+    }
+    .stat .v {
+      font-size: 19px;
+      font-weight: 700;
+      margin-top: 2px;
+      display: block;
+    }
+    .source-tag {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: #f1f5f9;
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      word-break: break-word;
+    }
+    .notice {
+      background: var(--warn-bg);
+      border-left: 4px solid var(--warn-border);
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .trace-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 8px;
+      background: var(--bg);
+      font-size: 14px;
+    }
+    .trace-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .nav-link {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .nav-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="badge">Sciar Tips · Staff View Alpha (Fictional Pilot)</span>
+      <h1>My Weekly Tips</h1>
+      <p class="sub">Plain-English tip breakdown for Halloran's pilot (12 weeks). Designed for phone screens.</p>
+      <a class="nav-link" href="index.html">← Back to Sciar Tips overview</a>
+    </header>
+
+    <section class="card" aria-label="Select your profile">
+      <label for="staffSelect">1. Choose your name (your view only)</label>
+      <select id="staffSelect"></select>
+      <p class="sub" style="margin-top:8px;">
+        Privacy rule: You see only your own hours and payouts. Colleague role averages appear only for roles with 3 or more staff.
+      </p>
+    </section>
+
+    <section class="card" aria-label="Your summary and hidden calculation details">
+      <h2 id="personHeading">Your 12-Week Summary</h2>
+      <div class="grid" id="summaryGrid"></div>
+
+      <div class="notice" id="ruleBox"></div>
+
+      <div class="source-tag" id="summarySource"></div>
+    </section>
+
+    <section class="card" aria-label="Colleague group benchmarks">
+      <h2>Team Benchmarks (Groups of 3+ Staff Only)</h2>
+      <p class="sub">
+        To protect privacy, roles with 1 or 2 people (floor manager, bar, kitchen porter) are not listed here so individuals cannot be identified.
+      </p>
+      <div id="groupTableWrap"></div>
+      <div class="source-tag" id="groupSource"></div>
+    </section>
+
+    <section class="card" aria-label="Weekly payout breakdown">
+      <h2>Your Weekly Breakdown</h2>
+      <p class="sub">Every Monday payout from your logged rota hours.</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Wk</th>
+              <th>Total hrs</th>
+              <th>After 23:00</th>
+              <th>Points</th>
+              <th>Pool</th>
+              <th>Your pay</th>
+            </tr>
+          </thead>
+          <tbody id="weeklyBody"></tbody>
+        </table>
+      </div>
+      <div class="source-tag" id="weeklySource"></div>
+    </section>
+
+    <section class="card" aria-label="Raise a concern">
+      <h2>Raise a Concern Privately</h2>
+      <p class="sub">
+        If your hours, late shifts, or payout look wrong, write a note below. Simple English is fine.
+      </p>
+      <div class="notice">
+        <strong>Honest Alpha Notice (Simulated Storage):</strong> In this alpha, your concern is saved <strong>only in this browser's local storage</strong> so you keep a dated record. Neither Declan nor Niamh can see it here, and it is not sent to a live server.
+      </div>
+      <label for="concernText">What happened?</label>
+      <textarea id="concernText" rows="3" placeholder="Example: Week 10 I worked 20 hours after 23:00 and want to check how points were counted."></textarea>
+      <button id="submitConcern" type="button">Save Concern to My Record</button>
+
+      <div id="concernList" style="margin-top:12px;"></div>
+    </section>
+  </div>
+
+  <script src="data/payouts.js"></script>
+  <script src="data/takings.js"></script>
+  <script>
+    (function () {
+      if (typeof PAYOUTS === "undefined" || !Array.isArray(PAYOUTS)) {
+        document.body.innerHTML = "<div class='wrap'><p>Error: Could not load data/payouts.js.</p></div>";
+        return;
+      }
+
+      const rows = PAYOUTS.map(r => ({
+        week: Number(r.week),
+        week_start: r.week_start,
+        staff_id: r.staff_id,
+        first_name: r.first_name,
+        role: r.role,
+        hours: Number(r.hours),
+        hours_after_2300: Number(r.hours_after_2300),
+        points_per_hour: Number(r.points_per_hour),
+        points: Number(r.points),
+        week_pool_eur: Number(r.week_pool_eur),
+        tip_payout_eur: Number(r.tip_payout_eur)
+      }));
+
+      // Build distinct staff list (sorted by staff_id)
+      const staffMap = new Map();
+      rows.forEach(r => {
+        if (!staffMap.has(r.staff_id)) {
+          staffMap.set(r.staff_id, { staff_id: r.staff_id, first_name: r.first_name, role: r.role });
+        }
+      });
+      const staffList = Array.from(staffMap.values()).sort((a, b) => a.staff_id.localeCompare(b.staff_id));
+
+      const staffSelect = document.getElementById("staffSelect");
+      staffList.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.staff_id;
+        opt.textContent = `${s.first_name} (${s.role})`;
+        if (s.staff_id === "S12") opt.selected = true; // Default to Rafael (S12)
+        staffSelect.appendChild(opt);
+      });
+
+      // Compute role aggregates for roles with >= 3 distinct staff
+      function renderGroupBenchmarks() {
+        const byRole = {};
+        rows.forEach(r => {
+          if (!byRole[r.role]) {
+            byRole[r.role] = { role: r.role, staffIds: new Set(), rowCount: 0, hours: 0, after23: 0, payout: 0 };
+          }
+          byRole[r.role].staffIds.add(r.staff_id);
+          byRole[r.role].rowCount += 1;
+          byRole[r.role].hours += r.hours;
+          byRole[r.role].after23 += r.hours_after_2300;
+          byRole[r.role].payout += r.tip_payout_eur;
+        });
+
+        const eligible = Object.values(byRole).filter(g => g.staffIds.size >= 3);
+        let html = "<table><thead><tr><th>Role (n staff)</th><th>Rows</th><th>Avg €/total hr</th><th>% hrs after 23:00</th></tr></thead><tbody>";
+        eligible.forEach(g => {
+          const eurPerHr = (g.payout / g.hours).toFixed(2);
+          const pctLate = ((g.after23 / g.hours) * 100).toFixed(2);
+          html += `<tr>
+            <td>${g.role} (n=${g.staffIds.size})</td>
+            <td>${g.rowCount}</td>
+            <td>€${eurPerHr}</td>
+            <td>${pctLate}%</td>
+          </tr>`;
+        });
+        html += "</tbody></table>";
+        document.getElementById("groupTableWrap").innerHTML = html;
+        document.getElementById("groupSource").textContent =
+          "Source: data/payouts.js (payouts.csv), filter: distinct staff_id per role >= 3 (server n=5, rows=60; chef n=3, rows=36).";
+      }
+
+      function storageKey(staffId) {
+        return `sciar_alpha_concerns_${staffId}`;
+      }
+
+      function renderConcerns(staffId, firstName) {
+        const listEl = document.getElementById("concernList");
+        let saved = [];
+        try {
+          saved = JSON.parse(localStorage.getItem(storageKey(staffId)) || "[]");
+        } catch (e) {
+          saved = [];
+        }
+
+        if (saved.length === 0) {
+          listEl.innerHTML = `<p class="sub">No saved concerns in this browser for ${firstName} yet.</p>`;
+          return;
+        }
+
+        listEl.innerHTML = `<h3 style="font-size:15px;margin:0 0 6px;">Your Saved Concern Trace (${saved.length})</h3>` +
+          saved.map((item, idx) => `
+            <div class="trace-item">
+              <div class="trace-meta">Trace #${idx + 1} · ${item.timestamp} · Status: Stored locally in your browser</div>
+              <div>${escapeHtml(item.text)}</div>
+            </div>
+          `).join("");
+      }
+
+      function escapeHtml(str) {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function renderStaff(staffId) {
+        const myRows = rows.filter(r => r.staff_id === staffId).sort((a, b) => a.week - b.week);
+        if (!myRows.length) return;
+
+        const person = myRows[0];
+        const totalHours = myRows.reduce((s, r) => s + r.hours, 0);
+        const totalAfter23 = myRows.reduce((s, r) => s + r.hours_after_2300, 0);
+        const countedHours = totalHours - totalAfter23;
+        const totalPoints = myRows.reduce((s, r) => s + r.points, 0);
+        const totalPayout = myRows.reduce((s, r) => s + r.tip_payout_eur, 0);
+        const eurPerTotalHr = (totalPayout / totalHours).toFixed(2);
+        const pctAfter23 = ((totalAfter23 / totalHours) * 100).toFixed(2);
+
+        document.getElementById("personHeading").textContent =
+          `${person.first_name}'s 12-Week Summary (${person.role})`;
+
+        document.getElementById("summaryGrid").innerHTML = `
+          <div class="stat">
+            <span class="k">Total Tip Payout</span>
+            <span class="v">€${totalPayout.toFixed(2)}</span>
+          </div>
+          <div class="stat">
+            <span class="k">Tips per Total Hour</span>
+            <span class="v">€${eurPerTotalHr}/hr</span>
+          </div>
+          <div class="stat">
+            <span class="k">Hours After 23:00 (0 pts)</span>
+            <span class="v">${totalAfter23.toFixed(1)}h (${pctAfter23}%)</span>
+          </div>
+          <div class="stat">
+            <span class="k">Counted Hours × Rate</span>
+            <span class="v">${countedHours.toFixed(1)}h × ${person.points_per_hour}</span>
+          </div>
+        `;
+
+        document.getElementById("ruleBox").innerHTML =
+          `<strong>How your payout is calculated (hidden in text alerts):</strong><br>` +
+          `Your role rate is <strong>${person.points_per_hour} points/hour</strong>. ` +
+          `Hours worked after <strong>23:00</strong> earn <strong>0 points</strong>. ` +
+          `Out of your <strong>${totalHours.toFixed(1)}</strong> total hours, <strong>${totalAfter23.toFixed(1)}</strong> were after 23:00, ` +
+          `leaving <strong>${countedHours.toFixed(1)}</strong> counted hours (<strong>${totalPoints.toFixed(2)}</strong> total points).`;
+
+        document.getElementById("summarySource").textContent =
+          `Source: data/payouts.js (payouts.csv), filter: staff_id = "${staffId}" (${person.first_name}), weeks 1 to 12, count = ${myRows.length} rows.`;
+
+        const tbody = document.getElementById("weeklyBody");
+        tbody.innerHTML = myRows.map(r => `
+          <tr>
+            <td>W${r.week}</td>
+            <td>${r.hours.toFixed(1)}</td>
+            <td>${r.hours_after_2300.toFixed(1)}</td>
+            <td>${r.points.toFixed(2)}</td>
+            <td>€${r.week_pool_eur.toFixed(2)}</td>
+            <td><strong>€${r.tip_payout_eur.toFixed(2)}</strong></td>
+          </tr>
+        `).join("");
+
+        document.getElementById("weeklySource").textContent =
+          `Source: data/payouts.js (payouts.csv), filter: staff_id = "${staffId}", count = ${myRows.length} rows.`;
+
+        renderConcerns(staffId, person.first_name);
+      }
+
+      staffSelect.addEventListener("change", () => renderStaff(staffSelect.value));
+
+      document.getElementById("submitConcern").addEventListener("click", () => {
+        const staffId = staffSelect.value;
+        const person = staffList.find(s => s.staff_id === staffId);
+        const box = document.getElementById("concernText");
+        const text = box.value.trim();
+        if (!text) return;
+
+        let saved = [];
+        try {
+          saved = JSON.parse(localStorage.getItem(storageKey(staffId)) || "[]");
+        } catch (e) {
+          saved = [];
+        }
+        saved.unshift({
+          timestamp: new Date().toISOString().replace("T", " ").slice(0, 16) + " UTC",
+          text
+        });
+        localStorage.setItem(storageKey(staffId), JSON.stringify(saved));
+        box.value = "";
+        renderConcerns(staffId, person ? person.first_name : staffId);
+      });
+
+      renderGroupBenchmarks();
+      renderStaff(staffSelect.value);
+    })();
+  </script>
+</body>
+</html>        `;
+
+        document.getElementById("ruleBox").innerHTML =
+          `<strong>How your payout is calculated (hidden in text alerts):</strong><br>` +
+          `Your role rate is <strong>${person.points_per_hour} points/hour</strong>. ` +
+          `Hours worked after <strong>23:00</strong> earn <strong>0 points</strong>. ` +
+          `Out of your <strong>${totalHours.toFixed(1)}</strong> total hours, <strong>${totalAfter23.toFixed(1)}</strong> were after 23:00, ` +
+          `leaving <strong>${countedHours.toFixed(1)}</strong> counted hours (<strong>${totalPoints.toFixed(2)}</strong> total points).`;
+
+        document.getElementById("summarySource").textContent =
+          `Source: data/payouts.js (payouts.csv), filter: staff_id = "${staffId}" (${person.first_name}), weeks 1 to 12, count = ${myRows.length} rows.`;
+
+        const tbody = document.getElementById("weeklyBody");
+        tbody.innerHTML = myRows.map(r => `
+          <tr>
+            <td>W${r.week}</td>
+            <td>${r.hours.toFixed(1)}</td>
+            <td>${r.hours_after_2300.toFixed(1)}</td>
+            <td>${r.points.toFixed(2)}</td>
+            <td>€${r.week_pool_eur.toFixed(2)}</td>
+            <td><strong>€${r.tip_payout_eur.toFixed(2)}</strong></td>
+          </tr>
+        `).join("");
+
+        document.getElementById("weeklySource").textContent =
+          `Source: data/payouts.js (payouts.csv), filter: staff_id = "${staffId}", count = ${myRows.length} rows.`;
+
+        renderConcerns(staffId, person.first_name);
+      }
+
+      staffSelect.addEventListener("change", () => renderStaff(staffSelect.value));
+
+      document.getElementById("submitConcern").addEventListener("click", () => {
+        const staffId = staffSelect.value;
+        const person = staffList.find(s => s.staff_id === staffId);
+        const box = document.getElementById("concernText");
+        const text = box.value.trim();
+        if (!text) return;
+
+        let saved = [];
+        try {
+          saved = JSON.parse(localStorage.getItem(storageKey(staffId)) || "[]");
+        } catch (e) {
+          saved = [];
+        }
+        saved.unshift({
+          timestamp: new Date().toISOString().replace("T", " ").slice(0, 16) + " UTC",
+          text
+        });
+        localStorage.setItem(storageKey(staffId), JSON.stringify(saved));
+        box.value = "";
+        renderConcerns(staffId, person ? person.first_name : staffId);
+      });
+
+      renderGroupBenchmarks();
+      renderStaff(staffSelect.value);
+    })();
+  </script>
+</body>
+</html>
